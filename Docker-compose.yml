@@ -1,0 +1,30 @@
+version: "3.7"
+services:
+  #  nginx service
+  web:
+    container_name: "web"
+    image: nginx:alpine
+    depends_on:
+      - app
+    ports:
+      - "8082:80"
+    volumes:
+      - ./app/conf.d:/etc/nginx/conf.d
+    networks:
+      - custom
+  
+  app:
+    container_name: "ws-chat"
+    image: novitskyi/ws-chat
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    networks:
+      - custom
+      
+networks:
+  custom:
+    driver: bridge
+
